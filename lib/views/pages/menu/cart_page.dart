@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/cart.dart';
+import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
 
 class CartPage extends StatelessWidget {
@@ -21,7 +23,7 @@ class CartPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: Cart.cartItems.length,
                     itemBuilder: (_, index) {
-                      return Text('${Cart.cartItems[index].quantity}');
+                      return _buildCartItemCard(Cart.cartItems[index]);
                     },
                   ),
                 ),
@@ -64,6 +66,34 @@ class CartPage extends StatelessWidget {
         onPressed: () {
           //TODO: add payment method
         },
+      ),
+    );
+  }
+
+  _buildCartItemCard(CartItem cItem) {
+    return ListTile(
+      contentPadding: EdgeInsets.only(bottom: SizeConfig.safeBlockHorizontal * 4),
+      leading: Container(
+        width: SizeConfig.safeBlockHorizontal * 16,
+        height: SizeConfig.safeBlockHorizontal * 16,
+        child: CachedNetworkImage(
+          imageUrl: cItem.item.url,
+          fit: BoxFit.cover,
+        ),
+      ),
+      title: Text(cItem.item.name),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('${cItem.item.price} USD'),
+          IconButton(
+            icon: Icon(
+              Icons.cancel,
+              color: Colors.grey[400],
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
