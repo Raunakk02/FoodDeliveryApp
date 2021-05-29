@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/models/cart.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
-import 'package:food_delivery_app/views/pages/menu_page.dart';
+import 'package:food_delivery_app/views/pages/menu/menu_page.dart';
 
 class CartFab extends StatelessWidget {
   @override
@@ -27,7 +28,8 @@ class CartFab extends StatelessWidget {
             backgroundColor: Colors.lightGreen,
             foregroundColor: Colors.white,
             child: FittedBox(
-              child: Text('1'),
+              child: Text(Cart.cartItems.length.toString()),
+              //TODO: implement state management
             ),
           ),
         ),

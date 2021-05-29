@@ -79,12 +79,7 @@ class ItemCard extends StatelessWidget {
                             Spacer(),
                             ElevatedButton(
                               onPressed: () {
-                                var newCartItem = CartItem(
-                                  id: DateTime.now().toIso8601String(),
-                                  item: foodItem,
-                                  quantity: 1,
-                                );
-                                Cart().addToCart(newCartItem);
+                                Cart().addToCart(foodItem);
                               },
                               child: Text('${foodItem.price} USD'),
                               style: ElevatedButton.styleFrom(

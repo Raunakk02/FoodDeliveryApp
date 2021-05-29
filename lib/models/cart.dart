@@ -1,14 +1,38 @@
 import 'package:food_delivery_app/models/cart_item.dart';
 
-class Cart {
-  List<CartItem> cartItems = [];
+import 'item.dart';
 
-  void addToCart(CartItem _item) {
+class Cart {
+  static List<CartItem> cartItems = [];
+
+  void addToCart(Item item) {
     int index = -1;
-    index = cartItems.indexWhere((e) => e.item == _item.item);
+
+    if (cartItems.isEmpty) {
+      cartItems.add(
+        CartItem(
+          id: DateTime.now().toIso8601String(),
+          item: item,
+          quantity: 1,
+        ),
+      );
+      return;
+    }
+
+    index = cartItems.indexWhere(
+      (e) {
+        return e.item == item;
+      },
+    );
 
     if (index == -1) {
-      cartItems.add(_item);
+      cartItems.add(
+        CartItem(
+          id: DateTime.now().toIso8601String(),
+          item: item,
+          quantity: 1,
+        ),
+      );
     } else {
       var oldCartItem = cartItems[index];
       cartItems[index] = CartItem(
@@ -17,5 +41,7 @@ class Cart {
         quantity: oldCartItem.quantity + 1,
       );
     }
+
+    print(cartItems.length);
   }
 }
