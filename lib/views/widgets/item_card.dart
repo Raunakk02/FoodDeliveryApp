@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:food_delivery_app/models/cart.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/item.dart';
+import 'package:food_delivery_app/views/widgets/buy_button.dart';
 
 class ItemCard extends StatelessWidget {
   final Item foodItem;
@@ -77,16 +78,7 @@ class ItemCard extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
-                            ElevatedButton(
-                              onPressed: () {
-                                Cart().addToCart(foodItem);
-                              },
-                              child: Text('${foodItem.price} USD'),
-                              style: ElevatedButton.styleFrom(
-                                shape: StadiumBorder(),
-                                primary: Colors.grey[900],
-                              ),
-                            ),
+                            BuyButton(foodItem),
                           ],
                         ),
                       ],

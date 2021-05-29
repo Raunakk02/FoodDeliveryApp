@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/views/pages/menu/cart_page.dart';
+import 'package:food_delivery_app/views/pages/menu/information_page.dart';
+import 'package:food_delivery_app/views/pages/menu/orders_page.dart';
 
 class MenuPage extends StatelessWidget {
   @override
@@ -54,8 +56,8 @@ class MenuPage extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           children: [
             CartPage(),
-            Text('Orders page'),
-            Text('Information page'),
+            OrdersPage(),
+            InformationPage(),
           ],
         ),
       ),

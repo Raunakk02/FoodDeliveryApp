@@ -5,6 +5,13 @@ import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
 
 class CartPage extends StatelessWidget {
+  double get _cartTotal {
+    return Cart.cartItems.fold<double>(
+      0.0,
+      (sum, e) => sum += (e.item.price * e.quantity),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +44,7 @@ class CartPage extends StatelessWidget {
                   height: SizeConfig.screenHeight * 0.03,
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       'Value: ',
@@ -46,7 +54,7 @@ class CartPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '161 usd',
+                      '$_cartTotal usd',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -81,11 +89,23 @@ class CartPage extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      title: Text(cItem.item.name),
+      title: Text(
+        cItem.item.name,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.black87,
+        ),
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('${cItem.item.price} USD'),
+          Text(
+            '${cItem.quantity} x ${cItem.item.price} USD',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.black54,
+            ),
+          ),
           IconButton(
             icon: Icon(
               Icons.cancel,
