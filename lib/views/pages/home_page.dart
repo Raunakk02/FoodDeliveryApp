@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       if (showFab == false) {
         setState(() {
           showFab = true;
-          print("offset: $showFab");
+          // print("offset: $showFab");
         });
       }
     } else {

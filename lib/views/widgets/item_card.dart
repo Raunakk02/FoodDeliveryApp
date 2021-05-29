@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:food_delivery_app/models/cart.dart';
+import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/item.dart';
 
 class ItemCard extends StatelessWidget {
@@ -76,7 +78,14 @@ class ItemCard extends StatelessWidget {
                             ),
                             Spacer(),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                var newCartItem = CartItem(
+                                  id: DateTime.now().toIso8601String(),
+                                  item: foodItem,
+                                  quantity: 1,
+                                );
+                                Cart().addToCart(newCartItem);
+                              },
                               child: Text('${foodItem.price} USD'),
                               style: ElevatedButton.styleFrom(
                                 shape: StadiumBorder(),

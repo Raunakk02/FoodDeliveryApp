@@ -1,4 +1,6 @@
 class FakeRespository {
+  List<Map<String, Object>> cart = [];
+
   static Future<List<String>> get offerBanners async {
     return Future.delayed(Duration(seconds: 2), () {
       return [
@@ -154,5 +156,19 @@ class FakeRespository {
         },
       ];
     });
+  }
+
+  Future<void> updateCart(List<Map<String, Object>> cartItems) {
+    cart = [...cartItems];
+    return Future.delayed(Duration(seconds: 2));
+  }
+
+  Future<List<Map<String, Object>>> get getCartItems {
+    return Future.delayed(
+      Duration(seconds: 2),
+      () {
+        return [...cart];
+      },
+    );
   }
 }

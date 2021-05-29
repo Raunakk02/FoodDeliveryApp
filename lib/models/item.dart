@@ -32,4 +32,17 @@ class Item {
         unit: json['unit'],
         url: json['url']);
   }
+
+  static Map<String, Object> toJSON(Item item) {
+    return {
+      'id': item.id,
+      'type': item.type,
+      'name': item.name,
+      'description': item.description,
+      'price': item.price,
+      'metric': item.metric,
+      'unit': item.unit,
+      'url': item.url,
+    };
+  }
 }
