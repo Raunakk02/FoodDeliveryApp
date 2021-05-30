@@ -32,29 +32,28 @@ mixin _$CartViewModel on _CartViewModel, Store {
     });
   }
 
-  final _$_CartViewModelActionController =
-      ActionController(name: '_CartViewModel');
+  final _$fetchCartItemsFromRepoAsyncAction =
+      AsyncAction('_CartViewModel.fetchCartItemsFromRepo');
 
   @override
-  void addToCart(Item item) {
-    final _$actionInfo = _$_CartViewModelActionController.startAction(
-        name: '_CartViewModel.addToCart');
-    try {
-      return super.addToCart(item);
-    } finally {
-      _$_CartViewModelActionController.endAction(_$actionInfo);
-    }
+  Future<void> fetchCartItemsFromRepo() {
+    return _$fetchCartItemsFromRepoAsyncAction
+        .run(() => super.fetchCartItemsFromRepo());
   }
 
+  final _$addToCartAsyncAction = AsyncAction('_CartViewModel.addToCart');
+
   @override
-  void deleteFromCart(CartItem cItem) {
-    final _$actionInfo = _$_CartViewModelActionController.startAction(
-        name: '_CartViewModel.deleteFromCart');
-    try {
-      return super.deleteFromCart(cItem);
-    } finally {
-      _$_CartViewModelActionController.endAction(_$actionInfo);
-    }
+  Future<void> addToCart(Item item) {
+    return _$addToCartAsyncAction.run(() => super.addToCart(item));
+  }
+
+  final _$deleteFromCartAsyncAction =
+      AsyncAction('_CartViewModel.deleteFromCart');
+
+  @override
+  Future<void> deleteFromCart(CartItem cItem) {
+    return _$deleteFromCartAsyncAction.run(() => super.deleteFromCart(cItem));
   }
 
   @override

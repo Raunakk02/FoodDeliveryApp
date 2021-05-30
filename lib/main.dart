@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/view_models/page_view_models/menu/cart/cart_view_model.dart';
-import 'package:food_delivery_app/view_models/page_view_models/menu/information/information_view_model.dart';
-import 'package:food_delivery_app/view_models/page_view_models/menu/orders/orders_view_model.dart';
+import 'package:food_delivery_app/infra/view_model_factory.dart';
+import 'package:food_delivery_app/models/cart_item/cart_item.dart';
+import 'package:food_delivery_app/models/item/item.dart';
+import 'package:food_delivery_app/services/local_storage.dart';
 import 'package:food_delivery_app/views/pages/home_page.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ItemAdapter());
+  Hive.registerAdapter(CartItemAdapter());
+  await Hive.openBox<Item>(LocalStorage.itemBoxName);
+  await Hive.openBox<CartItem>(LocalStorage.cartItemsBoxName);
   runApp(App());
 }
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(
-          create: (_) => CartViewModel(),
-        ),
-        Provider(
-          create: (_) => OrdersViewModel(),
-        ),
-        Provider(
-          create: (_) => InformationViewModel(),
-        ),
-      ],
-      child: MaterialApp(
-        home: HomePage(),
-      ),
-    );
+    return MaterialApp(home: HomePage(ViewModelFactory.homeVM));
   }
 }

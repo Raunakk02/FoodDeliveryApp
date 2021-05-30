@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:food_delivery_app/infra/view_model_factory.dart';
-import 'package:food_delivery_app/models/cart.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
 import 'package:food_delivery_app/view_models/page_view_models/menu/cart/cart_view_model.dart';
 import 'package:food_delivery_app/views/base_view.dart';

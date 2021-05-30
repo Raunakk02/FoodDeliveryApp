@@ -1,5 +1,9 @@
-import 'package:food_delivery_app/models/cart_item.dart';
-import 'package:food_delivery_app/models/item.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:food_delivery_app/models/cart_item/cart_item.dart';
+import 'package:food_delivery_app/models/item/item.dart';
+import 'package:food_delivery_app/services/api_service.dart';
+import 'package:food_delivery_app/services/connection.dart';
+import 'package:food_delivery_app/services/local_storage.dart';
 import 'package:food_delivery_app/view_models/base_view_model.dart';
 import 'package:mobx/mobx.dart';
 
@@ -18,7 +22,22 @@ abstract class _CartViewModel extends BaseViewModel with Store {
       );
 
   @action
-  void addToCart(Item item) {
+  Future<void> fetchCartItemsFromRepo() async {
+    var connectivityRes = await Connection.checkConnection();
+    if (connectivityRes != ConnectivityResult.none) {
+      cartListItems = await ApiService.getCartItemsFromRepo();
+      var box = LocalStorage.getCartItemsBox;
+      box.clear();
+      box.addAll(cartListItems);
+    } else {
+      var box = LocalStorage.getCartItemsBox;
+      cartListItems = box.values.toList();
+    }
+    return;
+  }
+
+  @action
+  Future<void> addToCart(Item item) async {
     int index = -1;
 
     if (cartListItems.isEmpty) {
@@ -29,6 +48,10 @@ abstract class _CartViewModel extends BaseViewModel with Store {
           quantity: 1,
         ),
       );
+      await ApiService.updateCartOnRepo(cartListItems);
+      var box = LocalStorage.getCartItemsBox;
+      box.clear();
+      box.addAll(cartListItems);
       return;
     }
 
@@ -55,11 +78,22 @@ abstract class _CartViewModel extends BaseViewModel with Store {
       );
     }
 
+    await ApiService.updateCartOnRepo(cartListItems);
+    var box = LocalStorage.getCartItemsBox;
+    box.clear();
+    box.addAll(cartListItems);
+
     print(cartListItems.length);
+    return;
   }
 
   @action
-  void deleteFromCart(CartItem cItem) {
+  Future<void> deleteFromCart(CartItem cItem) async {
     cartListItems.removeWhere((e) => e == cItem);
+    await ApiService.updateCartOnRepo(cartListItems);
+    var box = LocalStorage.getCartItemsBox;
+    box.clear();
+    box.addAll(cartListItems);
+    return;
   }
 }

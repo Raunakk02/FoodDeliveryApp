@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/infra/view_model_factory.dart';
-import 'package:food_delivery_app/view_models/page_view_models/menu/cart/cart_view_model.dart';
-import 'package:food_delivery_app/view_models/page_view_models/menu/information/information_view_model.dart';
-import 'package:food_delivery_app/view_models/page_view_models/menu/orders/orders_view_model.dart';
 import 'package:food_delivery_app/views/pages/menu/cart_page.dart';
 import 'package:food_delivery_app/views/pages/menu/information_page.dart';
 import 'package:food_delivery_app/views/pages/menu/orders_page.dart';

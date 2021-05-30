@@ -1,52 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:food_delivery_app/infra/view_model_factory.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
-import 'package:food_delivery_app/views/pages/content_page.dart';
+import 'package:food_delivery_app/view_models/page_view_models/home/home_view_model.dart';
+import 'package:food_delivery_app/views/pages/content/content_page.dart';
 import 'package:food_delivery_app/views/widgets/cart_fab.dart';
 import 'package:food_delivery_app/views/widgets/image_carousel.dart';
+import 'package:hive/hive.dart';
 
 class HomePage extends StatefulWidget {
+  final HomeViewModel viewModel;
+
+  const HomePage(
+    this.viewModel, {
+    Key? key,
+  }) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final _scrollController = ScrollController();
-  var _scrollPos = 0.0;
-  bool showFab = false; //TODO: implement view model
-
-  void checkposition() {
-    _scrollPos = _scrollController.offset;
-    if (_scrollPos > SizeConfig.screenHeight! * 0.25) {
-      if (showFab == false) {
-        setState(() {
-          showFab = true;
-        });
-      }
-    } else {
-      if (showFab == true) {
-        setState(() {
-          showFab = false;
-        });
-      }
-    }
-  } //TODO: implement view model
-
   @override
   void initState() {
     super.initState();
 
-    _scrollController.addListener(() {
-      checkposition();
+    widget.viewModel.scrollController!.addListener(() {
+      widget.viewModel.checkposition();
     });
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(() {
-      checkposition();
+    widget.viewModel.scrollController!.removeListener(() {
+      widget.viewModel.checkposition();
     });
+    Hive.close();
     super.dispose();
   }
 
@@ -57,7 +46,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
-        controller: _scrollController,
+        controller: widget.viewModel.scrollController!,
         slivers: [
           SliverAppBar(
             backgroundColor: Colors.transparent,
@@ -105,7 +94,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: showFab ? CartFab(ViewModelFactory.cartVM) : null,
+      floatingActionButton: Observer(builder: (_) {
+        return AnimatedOpacity(
+          opacity: widget.viewModel.showFab ? 1 : 0,
+          duration: Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+          child: CartFab(ViewModelFactory.cartVM),
+        );
+      }),
     );
   }
 }
