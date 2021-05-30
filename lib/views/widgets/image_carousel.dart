@@ -20,7 +20,10 @@ class _ImageCarouselState extends State<ImageCarousel> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: Text('Loading...'),
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.grey,
+                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                ),
               );
             }
             List<String> urls = snapshot.data!;
