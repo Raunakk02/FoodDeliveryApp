@@ -51,11 +51,13 @@ class CartPage extends StatelessWidget {
                     ),
                   );
                 }
-                return Expanded(
+                return Container(
+                  height: SizeConfig.safeBlockVertical! * 50,
                   child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     itemCount: viewModel.cartListItems.length,
                     itemBuilder: (_, index) {
-                      return _buildCartItemCard(viewModel.cartListItems[index]);
+                      return _buildCartItemCard(viewModel.cartListItems[index], context);
                     },
                   ),
                 );
@@ -105,7 +107,31 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  _buildCartItemCard(CartItem cItem) {
+  _confirmDelete(CartItem cItem, BuildContext ctx) {
+    showDialog(
+      context: ctx,
+      builder: (_) => AlertDialog(
+        title: Text('Are you sure ?'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.done),
+            onPressed: () {
+              viewModel.deleteFromCart(cItem);
+              Navigator.of(ctx).pop();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.cancel_outlined),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildCartItemCard(CartItem cItem, BuildContext ctx) {
     return ListTile(
       contentPadding: EdgeInsets.only(bottom: SizeConfig.safeBlockHorizontal! * 4),
       leading: Container(
@@ -139,7 +165,7 @@ class CartPage extends StatelessWidget {
               color: Colors.grey[400],
             ),
             onPressed: () {
-              viewModel.deleteFromCart(cItem);
+              _confirmDelete(cItem, ctx);
             },
           ),
         ],

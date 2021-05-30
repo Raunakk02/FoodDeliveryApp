@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:food_delivery_app/mocks/fake_repository.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:food_delivery_app/infra/view_model_factory.dart';
 import 'package:food_delivery_app/models/item.dart';
+import 'package:food_delivery_app/utils/ui_scaling.dart';
+import 'package:food_delivery_app/view_models/page_view_models/content/content_view_model.dart';
+import 'package:food_delivery_app/views/base_view.dart';
 import 'package:food_delivery_app/views/widgets/item_card.dart';
 
 class ContentPage extends StatelessWidget {
+  final ContentViewModel viewModel;
+
+  const ContentPage(
+    this.viewModel, {
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: FutureBuilder<Object>(
-          future: FakeRespository.items,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-            List<Map<dynamic, dynamic>> data = snapshot.data as List<Map<dynamic, dynamic>>;
-            List<Item> items = data.map((e) => Item.fromJSON(e as Map<String, Object>)).toList();
+    return BaseView(
+      viewModel: viewModel,
+      child: Container(
+        width: SizeConfig.screenWidth,
+        height: SizeConfig.screenHeight,
+        child: Observer(builder: (_) {
+          if (viewModel.loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
             return DefaultTabController(
               length: 5,
               child: Scaffold(
@@ -62,22 +73,23 @@ class ContentPage extends StatelessWidget {
                 body: TabBarView(
                   physics: BouncingScrollPhysics(),
                   children: [
-                    _buildItemList(items, 'pizza'),
-                    _buildItemList(items, 'sushi'),
-                    _buildItemList(items, 'drinks'),
-                    _buildItemList(items, 'pizza'),
-                    _buildItemList(items, 'sushi'),
+                    _buildItemList(viewModel.items, 'pizza'),
+                    _buildItemList(viewModel.items, 'sushi'),
+                    _buildItemList(viewModel.items, 'drinks'),
+                    _buildItemList(viewModel.items, 'pizza'),
+                    _buildItemList(viewModel.items, 'sushi'),
                   ],
                 ),
               ),
             );
-          }),
+          }
+        }),
+      ),
     );
   }
 
   ListView _buildItemList(List<Item> items, String type) {
-    List<Item> _filteredItems = [...items];
-    _filteredItems.removeWhere((e) => e.type != type);
+    final List<Item> _filteredItems = viewModel.filterItemsByType(items, type);
     return ListView.builder(
       primary: false,
       shrinkWrap: true,

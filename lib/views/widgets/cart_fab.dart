@@ -47,7 +47,6 @@ class CartFab extends StatelessWidget {
                       print('${viewModel.cartListItems.length}');
                       return Text('${viewModel.cartListItems.length}');
                     }),
-                //TODO: implement state management
               ),
             ),
           ),
