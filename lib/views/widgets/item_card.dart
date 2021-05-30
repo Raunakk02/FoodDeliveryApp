@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_delivery_app/models/cart.dart';
-import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/item.dart';
 import 'package:food_delivery_app/views/widgets/buy_button.dart';
 
 class ItemCard extends StatelessWidget {
-  final Item foodItem;
+  final Item? foodItem;
 
   ItemCard({this.foodItem});
 
@@ -29,7 +27,7 @@ class ItemCard extends StatelessWidget {
                   height: 450 * 0.5,
                   width: double.infinity,
                   child: CachedNetworkImage(
-                    imageUrl: foodItem.url,
+                    imageUrl: foodItem!.url!,
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
@@ -47,7 +45,7 @@ class ItemCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              foodItem.name,
+                              foodItem!.name!,
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -64,7 +62,7 @@ class ItemCard extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          foodItem.description,
+                          foodItem!.description!,
                           style: TextStyle(
                             color: Colors.black54,
                           ),
@@ -72,13 +70,13 @@ class ItemCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '${foodItem.metric} ${foodItem.unit}',
+                              '${foodItem!.metric} ${foodItem!.unit}',
                               style: TextStyle(
                                 color: Colors.black54,
                               ),
                             ),
                             Spacer(),
-                            BuyButton(foodItem),
+                            BuyButton(foodItem!),
                           ],
                         ),
                       ],

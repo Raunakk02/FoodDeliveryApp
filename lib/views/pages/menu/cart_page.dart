@@ -1,96 +1,123 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:food_delivery_app/models/cart.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
+import 'package:food_delivery_app/view_models/page_view_models/menu/cart/cart_view_model.dart';
+import 'package:food_delivery_app/views/base_view.dart';
 
 class CartPage extends StatelessWidget {
-  double get _cartTotal {
-    return Cart.cartItems.fold<double>(
-      0.0,
-      (sum, e) => sum += (e.item.price * e.quantity),
-    );
-  }
+  final CartViewModel viewModel;
+
+  const CartPage(
+    this.viewModel, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: FutureBuilder(
-        future: Future.delayed(
-          Duration(seconds: 2),
-        ),
-        builder: (_, snapshot) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
+    return BaseView(
+      viewModel: viewModel,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Padding(
+          padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal! * 3),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Observer(builder: (_) {
+                if (viewModel.cartListItems.isEmpty) {
+                  return Container(
+                    height: SizeConfig.safeBlockVertical! * 50,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Icon(
+                          Icons.emoji_food_beverage,
+                          size: SizeConfig.safeBlockVertical! * 18,
+                          color: Colors.black26,
+                        ),
+                        Text(
+                          'Food & Fun !',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black45,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return Expanded(
                   child: ListView.builder(
-                    itemCount: Cart.cartItems.length,
+                    itemCount: viewModel.cartListItems.length,
                     itemBuilder: (_, index) {
-                      return _buildCartItemCard(Cart.cartItems[index]);
+                      return _buildCartItemCard(viewModel.cartListItems[index]);
                     },
                   ),
+                );
+              }),
+              Text(
+                'Delivery is free',
+                style: TextStyle(
+                  color: Colors.black45,
                 ),
-                Text(
-                  'Delivery is free',
-                  style: TextStyle(
-                    color: Colors.black45,
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.screenHeight * 0.03,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Value: ',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+              ),
+              SizedBox(
+                height: SizeConfig.screenHeight! * 0.03,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Value: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      '$_cartTotal usd',
+                  ),
+                  Observer(
+                    builder: (_) => Text(
+                      '${viewModel.cartTotal} usd',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.payment),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        onPressed: () {
-          //TODO: add payment method
-        },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.payment),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          onPressed: () {
+            //TODO: add payment method
+          },
+        ),
       ),
     );
   }
 
   _buildCartItemCard(CartItem cItem) {
     return ListTile(
-      contentPadding: EdgeInsets.only(bottom: SizeConfig.safeBlockHorizontal * 4),
+      contentPadding: EdgeInsets.only(bottom: SizeConfig.safeBlockHorizontal! * 4),
       leading: Container(
-        width: SizeConfig.safeBlockHorizontal * 16,
-        height: SizeConfig.safeBlockHorizontal * 16,
+        width: SizeConfig.safeBlockHorizontal! * 16,
+        height: SizeConfig.safeBlockHorizontal! * 16,
         child: CachedNetworkImage(
-          imageUrl: cItem.item.url,
+          imageUrl: cItem.item!.url!,
           fit: BoxFit.cover,
         ),
       ),
       title: Text(
-        cItem.item.name,
+        cItem.item!.name!,
         style: TextStyle(
           fontWeight: FontWeight.w500,
           color: Colors.black87,
@@ -100,7 +127,7 @@ class CartPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '${cItem.quantity} x ${cItem.item.price} USD',
+            '${cItem.quantity} x ${cItem.item!.price} USD',
             style: TextStyle(
               fontWeight: FontWeight.w500,
               color: Colors.black54,
@@ -111,7 +138,9 @@ class CartPage extends StatelessWidget {
               Icons.cancel,
               color: Colors.grey[400],
             ),
-            onPressed: () {},
+            onPressed: () {
+              viewModel.deleteFromCart(cItem);
+            },
           ),
         ],
       ),

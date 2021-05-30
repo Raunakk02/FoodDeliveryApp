@@ -17,7 +17,7 @@ class ContentPage extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
             List<Map<dynamic, dynamic>> data = snapshot.data as List<Map<dynamic, dynamic>>;
-            List<Item> items = data.map((e) => Item.fromJSON(e)).toList();
+            List<Item> items = data.map((e) => Item.fromJSON(e as Map<String, Object>)).toList();
             return DefaultTabController(
               length: 5,
               child: Scaffold(

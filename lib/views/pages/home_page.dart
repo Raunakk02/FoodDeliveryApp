@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:food_delivery_app/infra/view_model_factory.dart';
 import 'package:food_delivery_app/utils/ui_scaling.dart';
+import 'package:food_delivery_app/view_models/page_view_models/menu/cart/cart_view_model.dart';
 import 'package:food_delivery_app/views/pages/content_page.dart';
 import 'package:food_delivery_app/views/widgets/cart_fab.dart';
 import 'package:food_delivery_app/views/widgets/image_carousel.dart';
@@ -17,18 +19,16 @@ class _HomePageState extends State<HomePage> {
 
   void printPosition() {
     _scrollPos = _scrollController.offset;
-    if (_scrollPos > SizeConfig.screenHeight * 0.25) {
+    if (_scrollPos > SizeConfig.screenHeight! * 0.25) {
       if (showFab == false) {
         setState(() {
           showFab = true;
-          // print("offset: $showFab");
         });
       }
     } else {
       if (showFab == true) {
         setState(() {
           showFab = false;
-          // print("offset: $showFab");
         });
       }
     }
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
         slivers: [
           SliverAppBar(
             backgroundColor: Colors.transparent,
-            expandedHeight: SizeConfig.screenHeight * 0.65,
+            expandedHeight: SizeConfig.screenHeight! * 0.65,
             centerTitle: true,
             title: Column(
               children: [
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: showFab ? CartFab() : null,
+      floatingActionButton: showFab ? CartFab(ViewModelFactory.cartVM) : null,
     );
   }
 }

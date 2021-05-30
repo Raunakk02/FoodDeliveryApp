@@ -23,7 +23,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                 child: Text('Loading...'),
               );
             }
-            List<String> urls = snapshot.data;
+            List<String> urls = snapshot.data!;
             return Stack(
               children: [
                 CarouselSlider.builder(
@@ -47,7 +47,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                       }),
                 ),
                 Positioned(
-                  bottom: SizeConfig.screenHeight * 0.05,
+                  bottom: SizeConfig.screenHeight! * 0.05,
                   width: SizeConfig.screenWidth,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

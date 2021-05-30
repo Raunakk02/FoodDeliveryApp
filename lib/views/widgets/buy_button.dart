@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/infra/view_model_factory.dart';
 import 'package:food_delivery_app/models/cart.dart';
 import 'package:food_delivery_app/models/item.dart';
+import 'package:food_delivery_app/view_models/page_view_models/menu/cart/cart_view_model.dart';
 
 class BuyButton extends StatefulWidget {
   final Item foodItem;
@@ -11,8 +13,8 @@ class BuyButton extends StatefulWidget {
 }
 
 class _BuyButtonState extends State<BuyButton> with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation<Color> _colorAnimation;
+  AnimationController? _animationController;
+  late Animation<Color?> _colorAnimation;
   @override
   void initState() {
     super.initState();
@@ -25,7 +27,7 @@ class _BuyButtonState extends State<BuyButton> with SingleTickerProviderStateMix
       end: Colors.lightGreen,
     ).animate(
       CurvedAnimation(
-        parent: _animationController,
+        parent: _animationController!,
         curve: Curves.easeInOut,
       ),
     );
@@ -33,7 +35,7 @@ class _BuyButtonState extends State<BuyButton> with SingleTickerProviderStateMix
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController!.dispose();
     super.dispose();
   }
 
@@ -43,17 +45,17 @@ class _BuyButtonState extends State<BuyButton> with SingleTickerProviderStateMix
       animation: _colorAnimation,
       builder: (_, child) => ElevatedButton(
         onPressed: () {
-          _animationController.forward();
-          Cart().addToCart(widget.foodItem);
+          _animationController!.forward();
+          ViewModelFactory.cartVM.addToCart(widget.foodItem);
           Future.delayed(
             Duration(seconds: 1),
             () {
-              _animationController.reverse();
+              _animationController!.reverse();
             },
           );
         },
         child: Text(
-          _animationController.isCompleted ? 'Added +1' : '${widget.foodItem.price} USD',
+          _animationController!.isCompleted ? 'Added +1' : '${widget.foodItem.price} USD',
         ),
         style: ElevatedButton.styleFrom(
           shape: StadiumBorder(),
