@@ -13,6 +13,9 @@ class CartViewModel = _CartViewModel with _$CartViewModel;
 
 abstract class _CartViewModel extends BaseViewModel with Store {
   @observable
+  bool loading = false;
+
+  @observable
   List<CartItem> cartListItems = ObservableList.of(<CartItem>[]);
 
   @computed
@@ -22,10 +25,11 @@ abstract class _CartViewModel extends BaseViewModel with Store {
       );
 
   @action
-  Future<void> fetchCartItemsFromRepo() async {
+  Future<void> init() async {
     var connectivityRes = await Connection.checkConnection();
     if (connectivityRes != ConnectivityResult.none) {
-      cartListItems = await ApiService.getCartItemsFromRepo();
+      // cartListItems = await ApiService.getCartItemsFromRepo();
+      cartListItems = [];
       var box = LocalStorage.getCartItemsBox;
       box.clear();
       box.addAll(cartListItems);
@@ -33,7 +37,6 @@ abstract class _CartViewModel extends BaseViewModel with Store {
       var box = LocalStorage.getCartItemsBox;
       cartListItems = box.values.toList();
     }
-    return;
   }
 
   @action

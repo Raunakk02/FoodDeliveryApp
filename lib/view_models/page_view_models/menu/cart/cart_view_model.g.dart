@@ -17,6 +17,21 @@ mixin _$CartViewModel on _CartViewModel, Store {
               name: '_CartViewModel.cartTotal'))
           .value;
 
+  final _$loadingAtom = Atom(name: '_CartViewModel.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   final _$cartListItemsAtom = Atom(name: '_CartViewModel.cartListItems');
 
   @override
@@ -32,13 +47,11 @@ mixin _$CartViewModel on _CartViewModel, Store {
     });
   }
 
-  final _$fetchCartItemsFromRepoAsyncAction =
-      AsyncAction('_CartViewModel.fetchCartItemsFromRepo');
+  final _$initAsyncAction = AsyncAction('_CartViewModel.init');
 
   @override
-  Future<void> fetchCartItemsFromRepo() {
-    return _$fetchCartItemsFromRepoAsyncAction
-        .run(() => super.fetchCartItemsFromRepo());
+  Future<void> init() {
+    return _$initAsyncAction.run(() => super.init());
   }
 
   final _$addToCartAsyncAction = AsyncAction('_CartViewModel.addToCart');
@@ -59,6 +72,7 @@ mixin _$CartViewModel on _CartViewModel, Store {
   @override
   String toString() {
     return '''
+loading: ${loading},
 cartListItems: ${cartListItems},
 cartTotal: ${cartTotal}
     ''';

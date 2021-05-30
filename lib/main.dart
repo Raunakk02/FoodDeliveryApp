@@ -20,6 +20,9 @@ Future main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage(ViewModelFactory.homeVM));
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(ViewModelFactory.homeVM),
+    );
   }
 }
