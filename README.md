@@ -30,3 +30,28 @@ This project relies on packages from [pub.dav](https://www.pub.dev/) which are:
 - [hive_flutter](https://pub.dev/packages/hive_flutter)
 #### Network Connectivity
 - [connectivity](https://pub.dev/packages/connectivity)
+
+## Steps for development
+
+### Prerequisites
+
+You'll need to setup the IDE and mobile device emulator on your local system.
+
+1. **Development Environment**: You'll need to have the following installed:
+    - [Flutter SDK](https://flutter.dev/docs/get-started/install)
+    - [Visual Studio Code](https://code.visualstudio.com/download) or [Android Studio](https://developer.android.com/studio) 
+
+### Command Line Steps
+
+For running the project on your local system, here's what you need to do.
+
+1. Clone and change into the project.
+    ```sh
+    $ git clone https://github.com/Raunakk02/FoodDeliveryApp.git
+    $ cd FoodDeliveryApp
+    ```
+1. Install packages
+    ```sh
+    $ flutter pub get
+    ```
+1. Start developing!
