@@ -25,7 +25,9 @@ class ContentPage extends StatelessWidget {
         child: Observer(builder: (_) {
           if (viewModel.loading) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                key: Key('content_page_loading_spinner'),
+              ),
             );
           } else {
             return DefaultTabController(

@@ -19,6 +19,7 @@ class CartPage extends StatelessWidget {
     return BaseView(
       viewModel: viewModel,
       child: Scaffold(
+        key: Key('cart_scaffold'),
         backgroundColor: Colors.transparent,
         body: Padding(
           padding: EdgeInsets.all(SizeConfig.safeBlockHorizontal! * 3),
