@@ -14,6 +14,14 @@ It utilizes a mock repository as a dummy backend which provides the food items a
 5. Floating Action Button keeps track of the number of different food items added to the cart and displays the same using an overlay on top of it.
 6. Cart page where you can order food items or discard them if not required.
 
+## Video Demo
+
+
+
+https://user-images.githubusercontent.com/56073198/126041598-001520d6-6e23-439e-a93b-8a05f8ca9a50.mp4
+
+
+
 ## Required Packages
 
 This project relies on packages from [pub.dav](https://www.pub.dev/) which are:
